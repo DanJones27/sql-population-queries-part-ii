@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/danieljones/Documents/Codecademy/SQL/Projects/sql-population-queries-part-ii-starting 3/db.sqlite" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1224"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,9:maincountries"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="countries" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="30"/><column index="2" value="165"/><column index="3" value="82"/></column_widths><filter_values><column index="2" value="the"/></filter_values><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="population_years" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="37"/><column index="2" value="65"/><column index="3" value="37"/><column index="4" value="63"/></column_widths><filter_values><column index="3" value="2005"/></filter_values><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">
+-- No. of countries from Africa
+SELECT count(*) FROM countries
+WHERE continent = 'Africa';
+
+-- Total population of Oceania in 2005 
+SELECT ROUND(SUM(population_years.population)) AS 'Total Population' 
+FROM population_years
+JOIN countries 
+ON countries.id = population_years.country_id
+WHERE year = 2005
+	AND continent = 'Oceania';
+
+--  Average pop. of countries in South Am 2003
+SELECT ROUND(AVG(population_years.population)) AS 'Average Population' 
+FROM population_years
+JOIN countries 
+ON countries.id = population_years.country_id
+WHERE year = 2003
+	AND continent = 'South America';
+	
+-- country with the smallest population (2 ways of finding)
+SELECT MIN(population_years.population) AS 'Smallest Population' 
+FROM population_years
+JOIN countries 
+ON countries.id = population_years.country_id
+WHERE year = 2007;
+
+SELECT * FROM population_years
+JOIN countries 
+ON countries.id = population_years.country_id
+WHERE year = 2007
+	AND population IS NOT NULL
+ORDER BY population_years.population ASC
+LIMIT 1;
+
+-- Av. pop. of Poland over time period
+SELECT ROUND(AVG(population_years.population)) AS 'Average Population'
+FROM population_years
+JOIN countries 
+ON countries.id = population_years.country_id
+WHERE countries.name = 'Poland';
+
+-- No. of countries with the word 'The' in their name
+SELECT * 
+FROM countries
+WHERE name 
+LIKE '%The%';
+
+-- Total population of each continent in 2010
+SELECT SUM(population_years.population), countries.continent 
+FROM population_years
+JOIN countries 
+ON countries.id = population_years.country_id
+WHERE year = 2010
+GROUP BY continent;
+
+
+
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
